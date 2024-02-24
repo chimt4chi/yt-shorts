@@ -7,8 +7,6 @@ import { GoUnmute, GoMute } from "react-icons/go";
 import { MdComment } from "react-icons/md";
 
 function Container() {
-  // TODO: Swipe Up/Down functionality
-
   // Video Details
   const videos = [
     {
@@ -45,7 +43,6 @@ function Container() {
 
   // States
 
-  // const [like, setLikes] = useState(0);
   const [likes, setLikes] = useState(Array(videos.length).fill(0));
   const [active, setActive] = useState(false);
 
@@ -146,7 +143,6 @@ function Container() {
   };
 
   const handleTimeUpdate = (e) => {
-    // setCurrentTime(e.target.currentTime);
     if (videoRef.current) {
       setCurrentTime(videoRef.current.currentTime);
     }
@@ -178,8 +174,6 @@ function Container() {
     };
   }, [videoRef]);
 
-  //
-
   const touchStartY = useRef(null);
 
   const handleTouchStart = (e) => {
@@ -191,9 +185,6 @@ function Container() {
 
     const deltaY = e.touches[0].clientY - touchStartY.current;
 
-    // You can add more logic here if needed
-
-    // For example, you can move the video element vertically with the swipe
     const videoElement = videoRef.current;
     if (videoElement) {
       videoElement.style.transform = `translateY(${deltaY}px)`;
@@ -206,14 +197,11 @@ function Container() {
     const deltaY = e.changedTouches[0].clientY - touchStartY.current;
 
     if (deltaY > 50) {
-      // Swipe down
       nextVideo();
     } else if (deltaY < -50) {
-      // Swipe up
       prevVideo();
     }
 
-    // Reset the transform property
     const videoElement = videoRef.current;
     if (videoElement) {
       videoElement.style.transform = "translateY(0)";
@@ -248,7 +236,6 @@ function Container() {
             style={{ width: "100%" }}
             height="400px"
             src={videos[currentVideoIndex].url}
-            // controls
             autoPlay
             onTimeUpdate={handleTimeUpdate}
             onLoadedMetadata={handleLoadedMetadata}
@@ -277,39 +264,37 @@ function Container() {
               min="0"
               max={duration}
               value={currentTime}
-              // readOnly
               onChange={handleSeekbarChange}
               style={{ width: "400px" }}
             />
             <div>{duration.toFixed(2)}</div>
           </div>
-        </div>
-      </div>
-
-      <div className="flex absolute lg:bottom-16 bottom-24 ml-[15rem] lg:ml-[30rem] flex-col gap-5 cursor-pointer">
-        <div className="flex flex-col items-center justify-center">
-          <div
-            onClick={handleLikes}
-            className="flex items-center h-12 w-12 rounded-full bg-[#212121] hover:bg-[#3f3f3f] justify-center"
-          >
-            <AiFillLike size={30} />
+          <div className="flex absolute bottom-16 ml-64 flex-col gap-5 cursor-pointer">
+            <div className="flex flex-col items-center justify-center">
+              <div
+                onClick={handleLikes}
+                className="flex items-center h-10 w-10 rounded-full bg-[#212121] hover:bg-[#3f3f3f] justify-center"
+              >
+                <AiFillLike size={30} />
+              </div>
+              <span className="font-semibold">{likes[currentVideoIndex]}</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <div
+                onClick={handleDislikes}
+                className="flex items-center h-10 w-10 rounded-full bg-[#212121] hover:bg-[#3f3f3f] justify-center"
+              >
+                <AiFillDislike size={30} />
+              </div>
+              <span className="font-bold">Dislike</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="flex items-center h-10 w-10 rounded-full bg-[#212121] hover:bg-[#3f3f3f] justify-center">
+                <MdComment size={30} />
+              </div>
+              <span className="font-bold">Comment</span>
+            </div>
           </div>
-          <span className="font-semibold">{likes[currentVideoIndex]}</span>
-        </div>
-        <div className="flex flex-col items-center">
-          <div
-            onClick={handleDislikes}
-            className="flex items-center h-12 w-12 rounded-full bg-[#212121] hover:bg-[#3f3f3f] justify-center"
-          >
-            <AiFillDislike size={30} />
-          </div>
-          <span className="font-bold">Dislike</span>
-        </div>
-        <div className="flex flex-col items-center">
-          <div className="flex items-center h-12 w-12 rounded-full bg-[#212121] hover:bg-[#3f3f3f] justify-center">
-            <MdComment size={30} />
-          </div>
-          <span className="font-bold">Comment</span>
         </div>
       </div>
 

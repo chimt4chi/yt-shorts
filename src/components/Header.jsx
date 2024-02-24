@@ -25,14 +25,14 @@ function Header() {
             <input
               id="search"
               type="text"
-              className="bg-[#212121] rounded-3xl h-10 p-6 hidden lg:flex" // Adjusted styling
+              className="bg-[#212121] rounded-3xl h-10 p-6 hidden lg:flex"
               placeholder="Search"
             />
             <label htmlFor="search">
               <CiSearch
                 color="white"
                 size={28}
-                className="cursor-pointer ml-2 hover:bg-[#]" // Adjusted styling
+                className="cursor-pointer ml-2 hover:bg-[#]"
               />
             </label>
           </div>
@@ -42,7 +42,7 @@ function Header() {
         </div>
         <div className="flex items-center gap-5 cursor-pointer ">
           <IoMdMore size={24} />
-          <span className="flex gap-4 items-center border border-white rounded-full h-10 w-28 justify-center font-bold text-[#3ea6ff] hover:bg-[#5a85bea6]">
+          <span className="flex gap-4 items-center border border-white rounded-full h-10 w-28 justify-center font-bold text-[#3ea6ff] hover:bg-[#5a85be7c]">
             <LuUserCircle2 size={24} color="#3ea6ff" />
             Sign in
           </span>
