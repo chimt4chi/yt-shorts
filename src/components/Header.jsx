@@ -40,9 +40,9 @@ function Header() {
             <MdKeyboardVoice color="white" size={28} />
           </div>
         </div>
-        <div className="flex items-center gap-5 cursor-pointer">
+        <div className="flex items-center gap-5 cursor-pointer ">
           <IoMdMore size={24} />
-          <span className="flex gap-4 items-center border border-white rounded-full h-10 w-28 justify-center font-bold text-[#3ea6ff]">
+          <span className="flex gap-4 items-center border border-white rounded-full h-10 w-28 justify-center font-bold text-[#3ea6ff] hover:bg-[#5a85bea6]">
             <LuUserCircle2 size={24} color="#3ea6ff" />
             Sign in
           </span>

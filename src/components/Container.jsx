@@ -238,11 +238,11 @@ function Container() {
         videoElement.removeEventListener("touchend", handleTouchEnd);
       }
     };
-  }, [videoRef]);
+  }, [videoRef, handleTouchStart, handleTouchMove, handleTouchEnd]);
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="absolute lg:top-20 top-24 h-[620px] xs:h-[550px] w-[400px] rounded-lg overflow-hidden">
+    <div className="flex flex-col items-center ">
+      <div className="absolute lg:top-20 md:top-20 sm:top-20 top-40 h-[550px] w-[350px] rounded-lg overflow-hidden">
         <div key={currentVideoIndex}>
           <video
             style={{ width: "100%" }}
@@ -286,7 +286,7 @@ function Container() {
         </div>
       </div>
 
-      <div className="flex absolute lg:bottom-16 bottom-20 ml-[20rem] lg:ml-[30rem] flex-col gap-5 cursor-pointer">
+      <div className="flex absolute lg:bottom-16 bottom-24 ml-[15rem] lg:ml-[30rem] flex-col gap-5 cursor-pointer">
         <div className="flex flex-col items-center justify-center">
           <div
             onClick={handleLikes}
