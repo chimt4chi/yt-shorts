@@ -4,41 +4,49 @@ import { WiDirectionUp } from "react-icons/wi";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
 import { FaPlay, FaPause } from "react-icons/fa";
 import { GoUnmute, GoMute } from "react-icons/go";
+import { MdComment } from "react-icons/md";
 
 function Container() {
-  // TODO: Swipe Up/Down functionality, like counter for each video, fix progress bar and time
+  // TODO: Swipe Up/Down functionality
 
   // Video Details
   const videos = [
     {
       url: "/vid1.mp4",
       title: "Video 1",
+      likes: 1,
     },
     {
       url: "/vid2.mp4",
       title: "Video 2",
+      likes: 2,
     },
     {
       url: "/vid3.mp4",
       title: "Video 3",
+      likes: 12,
     },
     {
       url: "/vid4.mp4",
       title: "Video 4",
+      likes: 22,
     },
     {
       url: "/vid5.mp4",
       title: "Video 5",
+      likes: 32,
     },
     {
       url: "/vid6.mp4",
       title: "Video 6",
+      likes: 42,
     },
   ];
 
   // States
 
-  const [like, setLikes] = useState(0);
+  // const [like, setLikes] = useState(0);
+  const [likes, setLikes] = useState(Array(videos.length).fill(0));
   const [active, setActive] = useState(false);
 
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
@@ -94,15 +102,21 @@ function Container() {
   };
 
   const handleLikes = () => {
-    setLikes((like) => like + 1);
+    setLikes((prevLikes) => {
+      const newLikes = [...prevLikes];
+      newLikes[currentVideoIndex]++;
+      return newLikes;
+    });
   };
 
   const handleDislikes = () => {
-    if (like < 1) {
-      return null;
-    }
-
-    setLikes((like) => like - 1);
+    setLikes((prevLikes) => {
+      const newLikes = [...prevLikes];
+      if (newLikes[currentVideoIndex] > 0) {
+        newLikes[currentVideoIndex]--;
+      }
+      return newLikes;
+    });
   };
 
   const handleScroll = (e) => {
@@ -164,19 +178,82 @@ function Container() {
     };
   }, [videoRef]);
 
+  //
+
+  const touchStartY = useRef(null);
+
+  const handleTouchStart = (e) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchMove = (e) => {
+    if (!touchStartY.current) return;
+
+    const deltaY = e.touches[0].clientY - touchStartY.current;
+
+    // You can add more logic here if needed
+
+    // For example, you can move the video element vertically with the swipe
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.style.transform = `translateY(${deltaY}px)`;
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    if (!touchStartY.current) return;
+
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+
+    if (deltaY > 50) {
+      // Swipe down
+      nextVideo();
+    } else if (deltaY < -50) {
+      // Swipe up
+      prevVideo();
+    }
+
+    // Reset the transform property
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.style.transform = "translateY(0)";
+    }
+
+    touchStartY.current = null;
+  };
+
+  useEffect(() => {
+    const videoElement = videoRef.current;
+
+    if (videoElement) {
+      videoElement.addEventListener("touchstart", handleTouchStart);
+      videoElement.addEventListener("touchmove", handleTouchMove);
+      videoElement.addEventListener("touchend", handleTouchEnd);
+    }
+
+    return () => {
+      if (videoElement) {
+        videoElement.removeEventListener("touchstart", handleTouchStart);
+        videoElement.removeEventListener("touchmove", handleTouchMove);
+        videoElement.removeEventListener("touchend", handleTouchEnd);
+      }
+    };
+  }, [videoRef]);
+
   return (
     <div className="flex flex-col items-center">
-      <div className="absolute top-20 h-[620px] w-[400px] rounded-lg overflow-hidden">
+      <div className="absolute lg:top-20 top-24 h-[620px] xs:h-[550px] w-[400px] rounded-lg overflow-hidden">
         <div key={currentVideoIndex}>
           <video
             style={{ width: "100%" }}
             height="400px"
             src={videos[currentVideoIndex].url}
-            controls
+            // controls
             autoPlay
             onTimeUpdate={handleTimeUpdate}
             onLoadedMetadata={handleLoadedMetadata}
             ref={videoRef}
+            onClick={hanndleActive}
           ></video>
           <div
             onClick={hanndleActive}
@@ -209,7 +286,7 @@ function Container() {
         </div>
       </div>
 
-      <div className="hidden sm:flex relative ml-[30rem] flex-col gap-5 cursor-pointer">
+      <div className="flex absolute lg:bottom-16 bottom-20 ml-[20rem] lg:ml-[30rem] flex-col gap-5 cursor-pointer">
         <div className="flex flex-col items-center justify-center">
           <div
             onClick={handleLikes}
@@ -217,7 +294,7 @@ function Container() {
           >
             <AiFillLike size={30} />
           </div>
-          <span className="font-semibold">{like}</span>
+          <span className="font-semibold">{likes[currentVideoIndex]}</span>
         </div>
         <div className="flex flex-col items-center">
           <div
@@ -229,11 +306,8 @@ function Container() {
           <span className="font-bold">Dislike</span>
         </div>
         <div className="flex flex-col items-center">
-          <div
-            onClick={() => setLikes(like - 1)}
-            className="flex items-center h-12 w-12 rounded-full bg-[#212121] hover:bg-[#3f3f3f] justify-center"
-          >
-            <AiFillDislike size={30} />
+          <div className="flex items-center h-12 w-12 rounded-full bg-[#212121] hover:bg-[#3f3f3f] justify-center">
+            <MdComment size={30} />
           </div>
           <span className="font-bold">Comment</span>
         </div>

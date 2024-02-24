@@ -8,31 +8,35 @@ import { MdKeyboardVoice } from "react-icons/md";
 function Header() {
   return (
     <header>
-      <div className="flex justify-between items-center ml-6 mr-5 mt-4 ">
+      <div className="flex justify-between items-center ml-6 mr-5 mt-4">
         <div className="flex gap-6 cursor-pointer">
           <IoIosMenu
             size={32}
             color="white"
-            className="hover:rounded-full hover:bg-[#131312]  "
+            className="hover:rounded-full hover:bg-[#131312]"
           />
-          <div className="flex ">
+          <div className="flex">
             <FaYoutube size={32} color="red" />
             <span className="text-white text-lg font-bold">Youtube</span>
           </div>
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 w-full justify-center">
           <div className="flex items-center">
             <input
               id="search"
               type="text"
-              className="bg-[#212121] rounded-2xl h-10 hidden md:flex"
+              className="bg-[#212121] rounded-3xl h-10 p-6 hidden lg:flex" // Adjusted styling
               placeholder="Search"
             />
             <label htmlFor="search">
-              <CiSearch color="white" size={28} className="cursor-pointer" />
+              <CiSearch
+                color="white"
+                size={28}
+                className="cursor-pointer ml-2 hover:bg-[#]" // Adjusted styling
+              />
             </label>
           </div>
-          <div className="hidden sm:flex h-10 w-10 bg-[#1b1b1b] rounded-full items-center justify-center cursor-pointer">
+          <div className="hidden sm:flex h-12 w-12 bg-[#1b1b1b] hover:bg-[#212121] rounded-full items-center justify-center cursor-pointer">
             <MdKeyboardVoice color="white" size={28} />
           </div>
         </div>
